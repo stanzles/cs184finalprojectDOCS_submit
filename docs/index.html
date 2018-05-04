@@ -1,6 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+  <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async>
+</script>
 <style>
   body {
     padding: 100px;
@@ -8,20 +11,43 @@
     margin: auto;
     text-align: left;
     font-weight: 300;
-    font-family: 'Open Sans', sans-serif;
+    /* font-family: 'Open Sans', sans-serif; */
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'Montserrat', sans-serif;
     color: #121212;
   }
   h1, h2, h3, h4 {
-    font-family: 'Source Sans Pro', sans-serif;
+    /* font-family: 'Source Sans Pro', sans-serif; */
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'Montserrat', sans-serif;
   }
   img {
   width: 100%;
   height: auto;
   }
+
+  .ss {
+      position: relative;
+      float: left;
+      width: auto;
+      height: 170px;
+      background-position: 50% 50%;
+      background-repeat:   no-repeat;
+      background-size:     cover;
+  }
+  /* #toobig{
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+  } */
+
 </style>
+
 <title>Gun N’ Penguin</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+<!-- <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"> -->
+<link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto" rel="stylesheet">
+<!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet"> -->
 </head>
 
 
@@ -35,7 +61,7 @@
     <table style="width=100%">
       <tr>
         <td>
-          <img src="./images/only_logo.png" align="middle" width="500px" style="width:500px;height:auto;"/>
+          <img src="./images/only_logo.png" align="middle" style="width:250px;height:auto;"/>
         </td>
 
 
@@ -44,36 +70,50 @@
   </div>
 
 
-<h2 align="middle">Abstract</h2>
+<h1 align="left">Abstract</h1>
 <p>
-We make a zombie survival shooter game in Unity3d. We demonstrate the use of fractals
+Gun N' Penguin is a zombie survival shooter game made in in Unity3d. We demonstrate the use of fractals
 in generating explosions for enemy death animations, build a 3D sound perspective system,
 and highlight a multitude of physical simulations. We discuss some of the difficulties we faced
 during our project development.
 </p>
 
-  <!-- <div align="middle">
-    <table style="width=100%">
-      <tr>
-        <td>
-          <img src="./images/p1.png" align="middle" width="500px"/>
-<figcaption align="middle">(penguin...) Braaaiiinssssss….</figcaption>
-        </td>
-      </tr>
-    </table>
-  </div> -->
+<h1 align ="left">Animations</h1>
 
-<h1 align ="middle">Animations</h1>
-
-<h2 align = "middle">Explosion generation</h2>
+<h2 align = "left">Explosion generation</h2>
 <p>
-  One of the main graphics component of our project is the explosions that happen when enemies are killed. Instead of using Unity’s particle system, we decided to try using C# scripted fractals to generate our explosion visuals. An explosion is kind of like a ball of fire that first expands then contracts, and I think that using fractals would be an interesting way to create this effect. To get started, I followed a tutorial on how to use recursion to generate basic fractals from the VR@Berkeley website. My script takes in a geometric shape (In our case a sphere), and recursively spawns children (more spheres) in different directions to create a fractal.
+  One of the main graphics component of our project is the explosions that happen when enemies are killed.
+  Instead of using Unity’s particle system, we decided to try using C# scripted fractals to generate our explosion visuals.
+  An explosion is kind of like a ball of fire that first expands then contracts, and I think that using fractals would be an interesting
+  way to create this effect. To get started, I followed a tutorial on how to use recursion to generate basic fractals from the
+  VR@Berkeley website. My script takes in a geometric shape (In our case a sphere),
+  and recursively spawns children (more spheres) in different directions to create a fractal.
 </p>
 <p>
-  The first challenge is to generate a fractal in the shape of a sphere because that’s the shape explosions tend to take. If I just have each fractal (with the exception of the first one at depth 0 which has 6 children) generate a total of five children: above, below, rightward, leftward, and to the front of it, the final result after (depth = 5) recursions is a fractal takes the shape of a regular octahedron, with one vertex pointing in the direction of each axis, which was not what I wanted. In order to create a more spherical result, I took my 5 existing child directions, split them into 4 triangles, and created 4 new directions from interpolating the 3 points of each triangle. This way, each fractal generates 9 children that are spread out more evenly in a hemispheric shape. With the extra children, unity can only process (depth = 4) recursions without lagging, but the tradeoff is worth it because now the script generates a fractal in the form of a sphere. A modification that I made is that at depths 1 and 3, each fractal only makes the original 5 children. This helps reduce lag while letting the result fractal retain its spherical form. The fractal generates a total of 1+(1*6)+(6*9)+(54*5)+(270*9) = 2761 mini objects.
+  The first challenge is to generate a fractal in the shape of a sphere because that’s
+  the shape explosions tend to take. If I just have each fractal
+  (with the exception of the first one at depth 0 which has 6 children) generate a total of five children: above,
+  below, rightward, leftward, and to the front of it, the final result after (depth = 5)
+  recursions is a fractal takes the shape of a regular octahedron, with one vertex pointing
+  in the direction of each axis, which was not what I wanted. In order to create a more spherical result,
+  I took my 5 existing child directions, split them into 4 triangles, and created 4 new directions from
+  interpolating the 3 points of each triangle. This way, each fractal generates 9 children that are
+  spread out more evenly in a hemispheric shape. With the extra children, unity can only process
+  (depth = 4) recursions without lagging, but the tradeoff is worth it because now the
+  script generates a fractal in the form of a sphere. A modification that I made is that at
+  depths 1 and 3, each fractal only makes the original 5 children.
+  This helps reduce lag while letting the result fractal retain its spherical form.
+  The fractal generates a total of 1+(1*6)+(6*9)+(54*5)+(270*9) = 2761 mini objects.
 </p>
 <p>
-  Now that I have a fractal in the shape of a sphere, the next challenge is to give it the colors of an explosion. In an explosion, the center is more yellow while the outer edges are more orange. I first tried creating this effect by making the depth 0 to 3 children yellow and making the depth 4 children orange. The result was a solid yellow cluster of spheres with some specs of orange around it, which looked really ugly so I had to try something different. Instead of applying a texture of solid color to my spheres, I used a transparent texture with a orange tint. This worked unexpectedly well. In the center of the fractal where most of the shapes overlap, the overlapping transparent textures created a really bright yellow color at the center which shifts to orange as you approach the edges where less texture density resulted in less overlap.
+  Now that I have a fractal in the shape of a sphere, the next challenge is to
+  give it the colors of an explosion. In an explosion, the center is more yellow
+   while the outer edges are more orange. I first tried creating this effect by
+   making the depth 0 to 3 children yellow and making the depth 4 children orange.
+   The result was a solid yellow cluster of spheres with some specs of orange around it,
+   which looked really ugly so I had to try something different. Instead of applying a
+    texture of solid color to my spheres, I used a transparent texture with a orange tint.
+    This worked unexpectedly well. In the center of the fractal where most of the shapes overlap, the overlapping transparent textures created a really bright yellow color at the center which shifts to orange as you approach the edges where less texture density resulted in less overlap.
 </p>
 <p>
   I wanted my explosion to expand and contract like a real explosion, so I set different expiration timers for each recursion layer. The first layers exist for 1 second, and each layer lasts shorter and shorter until it hits 0.1 second at depth = 4. Now the explosion expands and contracts smoothly. Thanks to the transparent textures I used, the color effects of having a bright center and orange edges persists even as the outer layers expire and disappear.
@@ -85,113 +125,133 @@ during our project development.
   Finally, I scaled the explosion’s size to that of the object exploding and added a burst of smoke using Unity’s particle system. I also added some randomization to children size so that each explosion looks slightly different. With all the coding and special effects completed, I started trying out different base meshes for the fractal other than the sphere. Each mesh I tried resulted in a completely different kind of explosion and I’ll list a few of the most notable ones. Using a curved cylinder mesh turned the explosion into a spiral of flame. Using a tree branch created a flaming sea urchin. Using a very small leaf mesh resulted in thousands of specs of fiery dust. Using a more rectangular mesh gave a sort of pixelated effect like the kind of explosion you would see in a 90’s video game. The wide variety of different fractal explosions that could be generated using the same code was what surprised me the most about this project.
 </p>
 
-<h2 align = "middle"> Penguin animations </h2>
+<!-- Explosion Images -->
+<div align="middle">
+  <table>
+    <tr>
+      <td>
+        <img class="ss" src="./images/explosion1.png" />
+        <figcaption align="middle">Mesh: sphere</figcaption>
+      </td>
+      <td>
+        <img class="ss" src="./images/explosion2.png"/>
+        <figcaption align="middle">Mesh: cube</figcaption>
+      </td>
+      <td>
+        <img class="ss" src="./images/explosion3.png"/>
+        <figcaption align="middle">Mesh: Penguin body...</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align = "left"> Penguin animations </h2>
 We created the death animation for our penguin player. We make the penguin model
 writhe in place by rotating its body, dictating the parameters in keyframes of the animation.
 We then let unity's built-in tweening program interpolate the animations in between the key frames.
 After creating the animation, we string together an animation state machine to determine when to transition
 from one animation to the other.
+<div align="middle">
+  <table>
+    <tr>
+      <td>
+        <img src="./images/animation.png" />
+        <figcaption align="middle">This is the animation window with keyframes specifying the body's position parameters.</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
 
-<h2 align = "middle"> Game Over Screen </h2>
+
+<h2 align = "left"> Game Over Screen </h2>
+<p>
 Similarly, to create the game over pop-up, we create an animation in the UI to change
 the transparency and scaling (size) of the game over screen to create a smooth transition
-from gameplay to a static game over.
+from gameplay to a static game over. When the player loses all of their health, they go into the
+death animation and are unable to move any more.
+</p>
 
-<h1 align ="middle"> Physical Simulations and Mechanics</h1>
+<h1 align ="left"> Physical Simulations and Mechanics</h1>
 
-<h2 align ="middle">3D Sound System</h2>
+<h2 align ="left">3D Sound System</h2>
 <p>
   When an enemy dies, it explodes, and we want to play an "BOOM!" sound to accompany
   our animation. Simply playing the audio clip when the player kills an enemy is unrealistic,
   so we wrote a script to determine where the audio clip is played in 3D space.
-  We determined the location via linear interpolation: 0.9f*Camera.main.transform.position + 0.1f*transform.position.
+  We determined the location via linear interpolation: $$0.9f \cdot \text{Camera.main.transform.position} + 0.1f \cdot \text{transform.position}$$
 </p>
 
-<h2 align ="middle"> Character Controls</h2>
+<h2 align ="left"> Character Controls</h2>
 <p>
-
+  Although this is a shooter game, the player controls are more or less like a car (ie. you can go
+  forward and backwards, but "A" and "D" rotate the player model counter-clockwise and clockwise
+  about the model's "up axis" respectively).
 </p>
 
-<h2 align ="middle"> Camera Perspective </h2>
-
-<h2 align ="middle">Shooting and Gun Shots Simulation</h2>
-<p>
-We implemented shooting calculation using raycast. From CS184, we learned to cast a ray and test the intersection.
-We used raycast for the gun. When user presses left click, we shoot a ray toward the position of gun pointing(camera position) with range of 100.
-If it hits something, ray cast would return the object it hits.
-We used this technique as our base for the shooting method.
-Also, I added point light to all the particles in particle system to simulate gun’s muzzle.
-Whenever user shoots, it emits a point light on the muzzle to simulate muzzle flash with particle systems like bullets shells.
-</p>
-
+<!-- Muzzle flash images -->
   <div align="middle">
-    <table style="width=100%">
+    <table style="width=100%;">
       <tr>
         <td>
           <img src="./images/p4.png" align="middle" width="500px"/>
-<figcaption align="middle">We use Unity’s particle simulator to animate our muzzle flash.</figcaption>
+          <figcaption align="middle">Animated muzzle flash.</figcaption>
         </td>
-      </tr>
-    </table>
-  </div>
-
-  <div align="middle">
-    <table style="width=100%">
-      <tr>
         <td>
           <img src="./images/p5.png" align="middle" width="500px"/>
-<figcaption align="middle">We also use Unity’s particle simulator to animate our bullet shells.</figcaption>
+          <figcaption align="middle">Particle simulator used to animate the falling of the shells.</figcaption>
         </td>
       </tr>
     </table>
   </div>
 
-
-<h2 align =”middle”>Explosion Simulation</h2>
+<h2 align ="left">Shooting Action and Gun Shot Simulation</h2>
 <p>
-We used fractals to generate our explosion effects. So far we’ve completed our main script for creating a fractal using recursion and added it into the game. The generated fractal currently uses a sphere as a base mesh and forms the general shape, color, and lighting effects of an explosion. Next steps include finding a more suitable and realistic base mesh shape as well as adding smoke effects with the help of the particle system.
+We implemented the shooting interaction using raycasts. Similar to what we've learned in CS 184, we can cast a ray from the camera
+to test for line-of-sign intersection with any colliders in front of the crosshair. When the player taps left click,
+a ray is generated from the camera-crosshair position within a particular range.
+Also, I added point light to all the particles in particle system to simulate gun’s muzzle.
+Whenever the play shoots, we create a point light on the muzzle and bullet shells fall to simulate a gunshot.
+Additionally, a delay is added to the player's shooting action so that the player is not overpowered.
 </p>
 
-  <div align="middle">
-    <table style="width=100%">
-      <tr>
-        <td>
-          <img src="./images/p3.png" align="middle" width="500px"/>
-<figcaption align="middle">The explosion animation is demonstrated here.</figcaption>
-        </td>
-      </tr>
-    </table>
-  </div>
-
-<h2 align =”middle”>Character Controller</h2>
+<h2 align ="left"> Camera Perspective </h2>
 <p>
-I wrote my own character controller on the penguin. I calculate different velocity in 3D space based on player’s button like “W A S D”. I also bind left click on mouse to shoot action.
-</p>
-
-<h2 align =”middle”>3D Sound Effect</h2>
-<p>
-I made an audio listener and put it on main character penguin. For each zombie, I made an audio source with range of 10 and the curve is linear rolloff to create variation of volume. When our main character is close to the zombie, the volume of zombie sound increases. For explosion sound effect, I used the linear combination of camera position and exploded object using formula: 0.9f*Camera.main.transform.position + 0.1f*transform.position. At this position I created an explosion sound effect instance that lasts even as the zombie object gets destroyed.
+  We also implement the capability to switch between third and first person view.
+  This is done by creating two cameras and assigning the switch of displays to a
+  keybind.
 </p>
 
 <h2 align =”middle”>Enemy AI</h2>
-We use Unity3d’s NavMeshAgent for our zombie AI. We set a lookRadius for each zombie so that it chases the player when entering its aggro zone. The NavMeshAgent then proceeds to chase the player while avoiding obstacles within by a certain distance.
+Our zombies move according to Unity's NavMeshAgent.
+We set a lookRadius for each zombie so that it chases the player when entering its aggro zone.
+Additionally, the NavMeshAgent then proceeds to chase the player while avoiding obstacles within by a certain distance.
+When the enemy is close enough to the player, it plays an attack animation and reduces the player's health.
 
-  <div align="middle">
-    <table style="width=100%">
-      <tr>
-        <td>
-          <img src="./images/p2.png" align="middle" width="500px"/>
-        </td>
-      </tr>
-    </table>
-  </div>
+<h1 align = "left"> Results </h1>
 
-<h1 align =”middle”>Additional Deliverables:</h1>
-<h2 align =”middle”>Presentation Slides</h2>
-<a href="https://docs.google.com/presentation/d/1FjOChi_jh4MxnLEksquc6pNMf3NCpZQB0Axk3hQXsuw/edit?usp=sharing">Link to our Google Presentation Slides.</a>
-<h2 align =”middle”>Milestone Video</h2>
+<h2 align =”middle”>Final Demo Video</h2>
 <div style="position:relative;height:0;padding-bottom:60%">
   <iframe src="https://www.youtube.com/embed/CWt3A4y2DCo?ecver=2" style="position:absolute;width:100%;height:100%;left:0" width="500" height="360" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
+
+<h1 align="left"> References </h1>
+<ul>
+  <li> <a href ="https://vr.berkeley.edu/decal/node/10"> Fractal Generation - Virtual Reality @ Berkeley</a> </li>
+</ul>
+
+<h1 align = "left"> Contributions </h1>
+<h2 align="left"> Harry Li </h2>
+<p>
+  .
+</p>
+<h2 align="left"> Stanley Liu </h2>
+<p>
+  Worked on animation state diagrams for both player and enemies. Made the game over screen. Applied enemy ai and implemented
+  game stats. Wrote webpage.
+</p>
+<h2 align="left"> Eric Tsai </h2>
+<p>
+  Wrote the fractal explosions script and added smoke effects to the explosions.
+</p>
 
 </html>
